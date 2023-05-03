@@ -19,7 +19,7 @@ export const Home = () => {
   return (
     <>
       <ul>
-        Trending today
+        <h1>Trending today</h1>
         {title.map(({ title, id, poster }) => {
           return (
             <li key={id}>
