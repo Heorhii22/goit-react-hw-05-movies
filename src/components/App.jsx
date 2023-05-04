@@ -15,6 +15,7 @@ export const App = () => {
       </ul>
 
       <Routes>
+        <Route path="/goit-react-hw-05-movies" element={<Home />}></Route>
         <Route path="/" element={<Home />} />
         <Route path="/movies" element={<Movies />} />
       </Routes>

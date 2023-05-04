@@ -11,7 +11,6 @@ export const Home = () => {
         title: title || name,
         poster: `https://image.tmdb.org/t/p/w500${poster_path}`,
       }));
-      console.log(formattedData);
       setTitle(formattedData);
     });
   }, []);
