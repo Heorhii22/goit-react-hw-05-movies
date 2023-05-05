@@ -19,6 +19,10 @@ export function Cast() {
     });
   }, [id]);
 
+  if (actors.length === 0) {
+    return <p>No actors list available</p>;
+  }
+
   return (
     <ul>
       {actors.map(({ character, name, profile }, index) => {

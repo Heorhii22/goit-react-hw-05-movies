@@ -28,4 +28,11 @@ export const MovieActors = async id => {
   return await res.json();
 };
 
+export const MovieReviews = async id => {
+  const REWIEWS = `https://api.themoviedb.org/3/movie/${id}/reviews?${KEY}&language=en-US&page=1`;
+
+  const res = await fetch(REWIEWS);
+  return await res.json();
+};
+
 export default popularMovies;
