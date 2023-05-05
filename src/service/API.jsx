@@ -10,7 +10,21 @@ const popularMovies = async () => {
 export const searchMovies = async query => {
   const SEARCHED = `https://api.themoviedb.org/3/search/movie?${KEY}&language=en-US&query=${query}&page=1&include_adult=false`;
 
-  const res = await fetch(`${SEARCHED}${KEY}`);
+  const res = await fetch(SEARCHED);
+  return await res.json();
+};
+
+export const Movie = async id => {
+  const MOVIE = `https://api.themoviedb.org/3/movie/${id}?${KEY}&language=en-US`;
+
+  const res = await fetch(MOVIE);
+  return await res.json();
+};
+
+export const MovieActors = async id => {
+  const CREDITS = `https://api.themoviedb.org/3/movie/${id}/credits?${KEY}&language=en-US`;
+
+  const res = await fetch(CREDITS);
   return await res.json();
 };
 

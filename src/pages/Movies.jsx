@@ -1,3 +1,4 @@
+import { Link, useSearchParams, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { searchMovies } from 'service/API';
 
@@ -5,11 +6,27 @@ export const Movies = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [query, setQuery] = useState('');
   const [movies, setMovies] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const name = searchParams.get('name');
+  const location = useLocation();
+
+  useEffect(() => {
+    if (name) {
+      setSearchQuery('');
+      setQuery(name);
+    }
+  }, [name]);
 
   useEffect(() => {
     if (query === '') {
       return;
     }
+
+    if (name) {
+      setSearchQuery('');
+      setQuery(name);
+    }
+
     searchMovies(query).then(({ results }) => {
       const filteredResults = results.map(
         ({ poster_path, id, title, name }) => ({
@@ -19,8 +36,9 @@ export const Movies = () => {
         })
       );
       setMovies(filteredResults);
+      setSearchParams({ name: query });
     });
-  }, [query]);
+  }, [query, setSearchParams, name]);
 
   const handleInput = e => {
     setSearchQuery(e.currentTarget.value);
@@ -29,7 +47,6 @@ export const Movies = () => {
   const onSearch = e => {
     e.preventDefault();
     setQuery(searchQuery);
-    setSearchQuery('');
   };
 
   return (
@@ -53,8 +70,14 @@ export const Movies = () => {
         {movies.map(({ title, id, poster }) => {
           return (
             <li key={id}>
-              {title}
-              <img src={poster} alt="movie" />
+              <Link to={`${id}`} state={{ from: location }}>
+                {title}
+              </Link>
+              {poster !== 'https://image.tmdb.org/t/p/w500null' ? (
+                <img src={poster} alt="movie" />
+              ) : (
+                <p>Image not found</p>
+              )}
             </li>
           );
         })}

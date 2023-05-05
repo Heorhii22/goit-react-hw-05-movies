@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import popularMovies from 'service/API';
 
 export const Home = () => {
@@ -22,7 +23,7 @@ export const Home = () => {
         {title.map(({ title, id, poster }) => {
           return (
             <li key={id}>
-              {title}
+              <Link to={`/movies/${id}`}>{title}</Link>
               <img src={poster} alt="movie" />
             </li>
           );
