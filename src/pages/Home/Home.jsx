@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import popularMovies from 'service/API';
-import css from './Home.module.css';
+// import css from './Home.module.css';
 
 export const Home = () => {
   const [title, setTitle] = useState([]);
