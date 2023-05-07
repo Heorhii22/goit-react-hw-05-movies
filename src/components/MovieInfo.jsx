@@ -1,9 +1,10 @@
-import { useParams, Link, Outlet } from 'react-router-dom';
+import { useParams, Link, Outlet, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Movie } from 'service/API';
 
 export function MovieInfo() {
   const [movieInfo, setMovieInfo] = useState([]);
+  const location = useLocation();
   const { id } = useParams();
 
   useEffect(() => {
@@ -28,6 +29,7 @@ export function MovieInfo() {
 
   return (
     <>
+      <Link to={location.state.from}>Go back</Link>
       <h2>{movieInfo.title}</h2>
       <p>{movieInfo.rating}</p>
       <img src={movieInfo.poster} alt="movie" />
