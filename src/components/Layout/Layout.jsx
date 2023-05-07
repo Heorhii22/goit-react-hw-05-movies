@@ -5,10 +5,10 @@ export function Layout() {
   return (
     <>
       <ul className={css.site_nav}>
-        <li>
+        <li className={css.site_nav__link}>
           <Link to="/">Home</Link>
         </li>
-        <li>
+        <li className={css.site_nav__link}>
           <Link to="/movies">Movies</Link>
         </li>
       </ul>
