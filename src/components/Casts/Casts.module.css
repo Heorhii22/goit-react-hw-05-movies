@@ -1,0 +1,12 @@
+.container {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px 10px;
+  justify-content: space-around;
+  margin: 0;
+  padding: 10px;
+}
+.thumb {
+  height: 278px;
+}

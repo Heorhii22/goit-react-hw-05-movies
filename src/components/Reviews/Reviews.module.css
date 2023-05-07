@@ -1,0 +1,20 @@
+.notfound {
+  margin: 15px auto;
+  padding: 5px 40px 50px;
+  color: darkred;
+  border: 1px solid gray;
+}
+.item {
+  border: 1px solid rgb(155, 154, 154);
+  padding: 5px 15px;
+}
+.container {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.name {
+  font-size: 18px;
+  color: chocolate;
+  font-weight: 600;
+}

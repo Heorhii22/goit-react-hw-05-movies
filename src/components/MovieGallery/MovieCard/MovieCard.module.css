@@ -1,0 +1,41 @@
+.poster {
+  max-width: 100%;
+}
+.title {
+  width: 100%;
+  padding: 10px;
+  margin: 0;
+  box-sizing: border-box;
+  display: block;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  color: aliceblue;
+  transform: translateY(100%);
+  transition: transform 250ms ease-in;
+}
+.container {
+  cursor: pointer;
+  position: relative;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  width: calc(100vw / 4 - 13px);
+  overflow: hidden;
+}
+@media screen and (max-width: 1199px) {
+  .container {
+    width: calc(100vw / 3 - 14px);
+  }
+}
+@media screen and (max-width: 799px) {
+  .container {
+    width: calc(100vw / 2 - 15px);
+  }
+}
+.container:hover .title {
+  transform: translateY(0);
+}
+.link {
+  display: block;
+}

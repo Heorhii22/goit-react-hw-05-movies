@@ -1,35 +1,22 @@
+import css from './Home.module.css';
+import API from 'services/api';
+import MovieGallery from 'components/MovieGallery/MovieGallery';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import popularMovies from 'service/API';
-// import css from './Home.module.css';
-
-export const Home = () => {
-  const [title, setTitle] = useState([]);
-
+const Home = () => {
+  const [items, setItems] = useState('');
   useEffect(() => {
-    popularMovies().then(({ results }) => {
-      const formattedData = results.map(({ title, name, id, poster_path }) => ({
-        id,
-        title: title || name,
-        poster: `https://image.tmdb.org/t/p/w500${poster_path}`,
-      }));
-      setTitle(formattedData);
-    });
+    API.getTrending()
+      .then(res => res.json())
+      .then(res => setItems(res.results))
+      .catch(error => setItems(''));
   }, []);
 
   return (
     <>
-      <ul>
-        <h1>Trending today</h1>
-        {title.map(({ title, id, poster }) => {
-          return (
-            <li key={id}>
-              <Link to={`/movies/${id}`}>{title}</Link>
-              <img src={poster} alt="movie" />
-            </li>
-          );
-        })}
-      </ul>
+      <h1 className={css.title}>Trending today</h1>
+      <MovieGallery items={items ? items : []} />
     </>
   );
 };
+
+export default Home;

@@ -1,85 +1,56 @@
-import Notiflix from 'notiflix';
-import { Link, useLocation, useSearchParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { searchMovies } from 'service/API';
+import { useState } from 'react';
+import API from 'services/api';
+import { useSearchParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import css from './Movies.module.css';
+import MovieGallery from 'components/MovieGallery/MovieGallery';
 
-export const Movies = () => {
-  const [typedQuery, setTypedQuery] = useState('');
-  const [collection, setCollection] = useState([]);
+const Movies = () => {
+  const [query, setQuery] = useState('');
+  const [search, setSearch] = useState('');
+  const [items, setItems] = useState('');
   const [searchParams, setSearchParams] = useSearchParams();
-  const searchedParams = searchParams.get('query');
-  const location = useLocation();
-
-  const onHandleInputChange = e => {
-    setTypedQuery(e.currentTarget.value);
-  };
-
-  const onSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    setSearchParams({ query: typedQuery });
+    if (query !== '') {
+      setSearchParams({ query });
+    }
   };
-
+  const handleInput = e => {
+    setQuery(e.target.value);
+  };
   useEffect(() => {
-    if (searchedParams === null) {
+    if (!search) {
       return;
     }
+    API.searchMovie(search)
+      .then(res => res.json())
+      .then(res => setItems(res.results))
+      .catch(error => setItems(''));
+  }, [search]);
 
-    searchMovies(searchedParams)
-      .then(({ results }) => {
-        console.log(results);
-        if (results.length === 0) {
-          Notiflix.Notify.failure(
-            'We are unable to find anything by your query'
-          );
-        }
-        const filteredResults = results.map(
-          ({ poster_path, id, title, name }) => ({
-            title: title || name,
-            id,
-            poster: `https://image.tmdb.org/t/p/w500${poster_path}`,
-          })
-        );
-
-        setCollection(filteredResults);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }, [searchedParams]);
-
+  useEffect(() => {
+    const query = searchParams.get('query');
+    if (!query) {
+      return;
+    }
+    setQuery(query);
+    setSearch(query);
+  }, [searchParams]);
   return (
-    <>
-      <form onSubmit={onSubmit}>
+    <div>
+      <form className={css.form} onSubmit={handleSubmit}>
         <input
-          name="search"
+          className={css.input}
+          value={query}
+          onChange={handleInput}
           type="text"
-          autoComplete="off"
-          autoFocus
-          placeholder="Search movies"
-          required
-          value={typedQuery}
-          onChange={onHandleInputChange}
         />
-        <button type="submit">
-          <span>Search</span>
-        </button>
+        <button className={css.button}>Search</button>
       </form>
-      <ul>
-        {collection.map(({ title, id, poster }) => {
-          return (
-            <li key={id}>
-              <Link to={`/movies/${id}`} state={{ from: location }}>
-                {title}
-              </Link>
-              {poster !== 'https://image.tmdb.org/t/p/w500null' ? (
-                <img src={poster} alt="movie" />
-              ) : (
-                <p>Image not found</p>
-              )}
-            </li>
-          );
-        })}
-      </ul>
-    </>
+      <MovieGallery items={items ? items : []} />
+    </div>
   );
 };
+
+export default Movies;

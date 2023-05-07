@@ -1,48 +1,41 @@
-import { useState, useEffect } from 'react';
+import css from './Reviews.module.css';
+import { useEffect, useState } from 'react';
+import API from 'services/api';
 import { useParams } from 'react-router-dom';
-import { MovieReviews } from 'service/API';
 
-export function Reviews() {
-  const { id } = useParams();
-  const [reviews, setReviews] = useState([]);
+const Reviews = () => {
+  const { movieId } = useParams();
+  const [items, setItems] = useState(null);
 
   useEffect(() => {
-    MovieReviews(id).then(({ results }) => {
-      console.log(results);
-      const filteredReview = results.map(({ author_details, content }) => ({
-        author_details,
-        content,
-      }));
-      setReviews(filteredReview);
-    });
-  }, [id]);
-
-  if (reviews.length === 0) {
-    return <p>No feedback given</p>;
+    API.getReviews(movieId)
+      .then(res => res.json())
+      .then(res => setItems(res.results))
+      .catch(err => setItems([]));
+  }, [movieId]);
+  if (!items) {
+    return;
+  }
+  if (items.length === 0) {
+    return (
+      <div className={css.notfound}>
+        We don`t have any reviews for this movie
+      </div>
+    );
   }
 
   return (
-    <ul>
-      {reviews.map(({ author_details, content }, index) => {
-        const avatar_path = author_details.avatar_path;
-        const has_https = avatar_path.startsWith('/https');
-
-        return (
-          <li key={index}>
-            <p>{author_details.username}</p>
-            {!author_details.avatar_path || !has_https ? (
-              <img
-                src="https://t3.ftcdn.net/jpg/05/26/72/48/360_F_526724825_fEKkOFrsAnTBW3G5Qc9VCZxArl3zWEdT.jpg"
-                alt="default_avatar"
-                width={80}
-              />
-            ) : (
-              <img src={author_details.avatar_path.substring(1)} alt="avatar" />
-            )}
+    <>
+      <ul className={css.container}>
+        {items.map(({ author, content }, idx) => (
+          <li className={css.item} key={idx}>
+            <p className={css.name}>{author}</p>
             <p>{content}</p>
           </li>
-        );
-      })}
-    </ul>
+        ))}
+      </ul>
+    </>
   );
-}
+};
+
+export default Reviews;

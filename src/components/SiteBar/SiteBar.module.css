@@ -1,0 +1,19 @@
+.container {
+  padding-left: 15px;
+}
+.link {
+  padding: 10px;
+  margin: 3px;
+  color: black;
+  border-radius: 3px;
+  display: inline-block;
+  text-decoration: none;
+  transition: background-color 250ms ease, color 250ms ease;
+}
+.link:hover {
+  background-color: rgb(230, 230, 230);
+}
+.active {
+  color: #e21010;
+  background-color: rgb(221, 221, 221);
+}
